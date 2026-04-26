@@ -76,9 +76,6 @@ export function Result() {
         </section>
       </main>
 
-      <footer className="footer">
-        <span className="muted">Dica: abra o link apenas uma vez e guarde em segredo.</span>
-      </footer>
     </div>
   );
 }
