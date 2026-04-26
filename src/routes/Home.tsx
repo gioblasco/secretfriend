@@ -59,6 +59,18 @@ function buildResultUrl(drawId: string, giver: string, receiver: string) {
   return `${window.location.origin}${window.location.pathname}#/r?d=${d}&g=${g}&t=${t}`;
 }
 
+function isValidBrMobile(digits: string) {
+  // BR-only, expecting DDD+number (10 or 11 digits without country code).
+  // ex: 11999998888 or 1133334444
+  return digits.length === 10 || digits.length === 11;
+}
+
+function buildWhatsAppUrl(phoneDigitsBr: string, message: string) {
+  const phone = `55${phoneDigitsBr}`;
+  const text = encodeURIComponent(message);
+  return `https://wa.me/${phone}?text=${text}`;
+}
+
 async function copyToClipboard(text: string) {
   await navigator.clipboard.writeText(text);
 }
@@ -127,6 +139,15 @@ export function Home() {
     await copyToClipboard(text);
     setCopiedKey("__all__");
     setTimeout(() => setCopiedKey((k) => (k === "__all__" ? null : k)), 1200);
+  }
+
+  function onSendWhatsApp(row: LinkRow) {
+    const digits = normalizePhoneDigits(row.phone);
+    if (!isValidBrMobile(digits)) return;
+
+    const message = `Oi, ${row.giver}! Seu link do Amigo Secreto é: ${row.url}\n\nAbra para ver quem você tirou.`;
+    const wa = buildWhatsAppUrl(digits, message);
+    window.open(wa, "_blank", "noopener,noreferrer");
   }
 
   function updateParticipant(id: string, patch: Partial<Participant>) {
@@ -299,9 +320,23 @@ export function Home() {
                 <div key={r.giver} className="linkCard">
                   <div className="linkTop">
                     <div className="linkName">{r.giver}</div>
-                    <button className="btn small" onClick={() => onCopyLink(r.giver, r.url)}>
-                      {copiedKey === r.giver ? "Copiado!" : "Copiar link"}
-                    </button>
+                    <div className="linkActions">
+                      <button className="btn small" onClick={() => onCopyLink(r.giver, r.url)}>
+                        {copiedKey === r.giver ? "Copiado!" : "Copiar link"}
+                      </button>
+                      <button
+                        className="btn small"
+                        onClick={() => onSendWhatsApp(r)}
+                        disabled={!isValidBrMobile(normalizePhoneDigits(r.phone))}
+                        title={
+                          isValidBrMobile(normalizePhoneDigits(r.phone))
+                            ? "Abrir WhatsApp"
+                            : "Preencha o celular com DDD (ex: 11999998888)"
+                        }
+                      >
+                        WhatsApp
+                      </button>
+                    </div>
                   </div>
                   <div className="linkUrl" title={r.url}>
                     {r.url}

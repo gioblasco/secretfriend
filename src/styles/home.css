@@ -166,6 +166,17 @@
   gap: 10px;
 }
 
+.linkActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.linkActions .btn.small {
+  white-space: nowrap;
+}
+
 .linkName {
   font-weight: 820;
   letter-spacing: -0.02em;
