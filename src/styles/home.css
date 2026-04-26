@@ -5,6 +5,90 @@
   margin-top: 12px;
 }
 
+.participantsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.participantsTable {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.participantsRow {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr 140px;
+  gap: 10px;
+  padding: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  align-items: center;
+}
+
+.participantsRow.head {
+  border-top: none;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.participantsRow.head .cell {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.cell {
+  min-width: 0;
+}
+
+.actionsCell {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--text);
+  padding: 10px 12px;
+  outline: none;
+  line-height: 1.2;
+}
+
+.input:focus {
+  border-color: rgba(124, 58, 237, 0.55);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+}
+
+@media (max-width: 720px) {
+  .participantsTable {
+    border-radius: 18px;
+  }
+
+  .participantsRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .participantsRow.head {
+    display: none;
+  }
+
+  .actionsCell {
+    justify-content: flex-start;
+  }
+}
+
 .meta {
   display: inline-flex;
   align-items: baseline;
