@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { decodeNameFromUrl, decodeToken } from "../lib/codec";
 import "../styles/result.css";
 
@@ -56,21 +56,11 @@ export function Result() {
               <div className="callout warn">
                 Não encaminhe este link. Se outra pessoa abrir, ela também verá o seu resultado.
               </div>
-              <div className="actions">
-                <Link className="btn primary" to="/">
-                  Criar novo sorteio
-                </Link>
-              </div>
             </>
           ) : (
             <>
               <h1 className="h1">Link inválido</h1>
               <p className="muted">{parsed.message}</p>
-              <div className="actions">
-                <Link className="btn primary" to="/">
-                  Voltar
-                </Link>
-              </div>
             </>
           )}
         </section>
