@@ -35,12 +35,9 @@ export function Result() {
   return (
     <div className="page">
       <header className="topbar">
-        <div className="brand">
-          <div className="brandMark" aria-hidden />
-          <div>
-            <div className="brandTitle">Amigo Secreto</div>
-            <div className="brandSubtitle">Seu resultado</div>
-          </div>
+        <div>
+          <div className="brandTitle">Amigo Secreto</div>
+          <div className="brandSubtitle">Seu resultado</div>
         </div>
       </header>
 

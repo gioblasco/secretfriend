@@ -1,18 +1,55 @@
 :root {
+  --bg: #081513;
+  --bg-grad-1: rgba(220, 38, 38, 0.28);
+  --bg-grad-2: rgba(34, 197, 94, 0.2);
+  --bg-grad-3: rgba(250, 204, 21, 0.14);
+  --panel: rgba(16, 33, 27, 0.72);
+  --panel2: rgba(21, 50, 40, 0.9);
+  --text: rgba(251, 250, 247, 0.96);
+  --muted: rgba(251, 250, 247, 0.72);
+  --accent: #dc2626;
+  --accent2: #16a34a;
+  --warn: #f59e0b;
+  --err: #f87171;
+  --border: rgba(248, 250, 252, 0.14);
+  --shadow: 0 20px 60px rgba(3, 7, 18, 0.38);
+  --radius: 18px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+body[data-theme="midnight"] {
   --bg: #0b1020;
+  --bg-grad-1: rgba(59, 130, 246, 0.22);
+  --bg-grad-2: rgba(139, 92, 246, 0.18);
+  --bg-grad-3: rgba(34, 197, 94, 0.1);
   --panel: rgba(255, 255, 255, 0.06);
   --panel2: rgba(255, 255, 255, 0.09);
   --text: rgba(255, 255, 255, 0.92);
   --muted: rgba(255, 255, 255, 0.68);
-  --accent: #ef4444;
+  --accent: #8b5cf6;
   --accent2: #22c55e;
   --warn: #f59e0b;
   --err: #ef4444;
   --border: rgba(255, 255, 255, 0.12);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-  --radius: 18px;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-    monospace;
+}
+
+body[data-theme="sunset"] {
+  --bg: #1b1020;
+  --bg-grad-1: rgba(249, 115, 22, 0.26);
+  --bg-grad-2: rgba(244, 63, 94, 0.18);
+  --bg-grad-3: rgba(250, 204, 21, 0.12);
+  --panel: rgba(52, 22, 45, 0.7);
+  --panel2: rgba(72, 26, 57, 0.9);
+  --text: rgba(255, 248, 240, 0.95);
+  --muted: rgba(255, 236, 214, 0.72);
+  --accent: #f97316;
+  --accent2: #fb7185;
+  --warn: #facc15;
+  --err: #fb7185;
+  --border: rgba(255, 255, 255, 0.12);
+  --shadow: 0 20px 60px rgba(19, 6, 17, 0.5);
 }
 
 * {
@@ -29,9 +66,10 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
     "Apple Color Emoji", "Segoe UI Emoji";
   color: var(--text);
-  background: radial-gradient(1200px 700px at 12% 12%, rgba(239, 68, 68, 0.22), transparent 56%),
-    radial-gradient(900px 600px at 90% 18%, rgba(34, 197, 94, 0.18), transparent 52%),
-    radial-gradient(800px 800px at 70% 90%, rgba(245, 158, 11, 0.10), transparent 60%), var(--bg);
+  background: radial-gradient(1200px 700px at 12% 12%, var(--bg-grad-1), transparent 56%),
+    radial-gradient(900px 600px at 90% 18%, var(--bg-grad-2), transparent 52%),
+    radial-gradient(800px 800px at 70% 90%, var(--bg-grad-3), transparent 60%), var(--bg);
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 a {
@@ -46,35 +84,30 @@ a {
 
 .topbar {
   padding: 28px 20px 16px;
-}
-
-.brand {
   max-width: 1020px;
   margin: 0 auto;
   display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.brandMark {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(239, 68, 68, 1), rgba(34, 197, 94, 1));
-  box-shadow: 0 14px 40px rgba(239, 68, 68, 0.16);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .brandTitle {
   font-weight: 760;
-  letter-spacing: -0.02em;
-  font-size: 18px;
+  font-size: 24px;
   line-height: 1.05;
 }
 
 .brandSubtitle {
   font-size: 13px;
   color: var(--muted);
-  margin-top: 2px;
+  margin-top: 8px;
+  max-width: 520px;
+}
+
+.brandBlock {
+  min-width: 0;
 }
 
 .container {
@@ -98,13 +131,11 @@ a {
 .h1 {
   margin: 0 0 6px;
   font-size: 22px;
-  letter-spacing: -0.03em;
 }
 
 .h2 {
   margin: 0 0 6px;
   font-size: 18px;
-  letter-spacing: -0.02em;
 }
 
 .muted {
@@ -143,6 +174,8 @@ a {
   gap: 10px;
   margin-top: 14px;
   flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btn {
@@ -169,14 +202,24 @@ a {
 }
 
 .btn.primary {
-  border-color: rgba(239, 68, 68, 0.65);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.92), rgba(239, 68, 68, 0.58));
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 92%, white 8%), color-mix(in srgb, var(--accent) 58%, transparent));
+  padding: 10px 16px;
+  font-size: 24px;
+  font-weight: 650;
 }
 
 .btn.small {
   padding: 8px 10px;
   border-radius: 12px;
   font-size: 13px;
+}
+
+.btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  padding: 8px 10px;
+  color: var(--muted);
 }
 
 .callout {
@@ -203,3 +246,9 @@ a {
   text-align: center;
 }
 
+@media (max-width: 720px) {
+  .topbar {
+    justify-content: center;
+    text-align: center;
+  }
+}

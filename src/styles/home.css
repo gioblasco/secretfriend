@@ -5,6 +5,55 @@
   margin-top: 12px;
 }
 
+.themePicker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.themePicker.subtle {
+  justify-content: center;
+  opacity: 0.72;
+}
+
+.themeChip {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+
+.themeChipIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.themeChip:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.themeChip.active {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.28);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+}
+
+.footerThemes {
+  padding-top: 4px;
+}
+
 .participantsHeader {
   display: flex;
   align-items: center;
@@ -16,17 +65,11 @@
 
 .importRow {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  align-items: end;
   flex-wrap: wrap;
   margin-top: 12px;
   margin-bottom: 6px;
-}
-
-.importHint {
-  font-size: 12px;
-  margin-top: 4px;
 }
 
 .fileBtn {
@@ -67,7 +110,6 @@
   color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
   font-weight: 750;
-  letter-spacing: 0.01em;
   text-transform: uppercase;
 }
 
@@ -97,6 +139,10 @@
 }
 
 @media (max-width: 720px) {
+  .themePicker {
+    justify-content: center;
+  }
+
   .participantsTable {
     border-radius: 18px;
   }
@@ -134,7 +180,6 @@
 
 .metaValue {
   font-weight: 800;
-  letter-spacing: -0.02em;
 }
 
 .metaValue.bad {
@@ -206,7 +251,6 @@
 
 .linkName {
   font-weight: 820;
-  letter-spacing: -0.02em;
 }
 
 .linkUrl {
@@ -249,4 +293,3 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.18);
 }
-

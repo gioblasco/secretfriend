@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { makeSecretFriendPairs } from "../lib/draw";
 import { encodeNameForUrl, encodeToken } from "../lib/codec";
 import { randomIdBase36 } from "../lib/random";
@@ -18,12 +18,43 @@ type LinkRow = {
   url: string;
 };
 
+type ThemeOption = {
+  id: ThemeId;
+  label: string;
+  icon: string;
+};
+
+type ThemeId = "christmas" | "midnight" | "sunset";
+
+const THEME_STORAGE_KEY = "secret-friend-theme";
+
+const THEME_OPTIONS: ThemeOption[] = [
+  { id: "christmas", label: "Tema de Natal", icon: "🎄" },
+  { id: "midnight", label: "Tema noturno", icon: "🌙" },
+  { id: "sunset", label: "Tema pôr do sol", icon: "🌅" },
+];
+
 function normalizeName(s: string) {
   return s.trim().replace(/\s+/g, " ");
 }
 
 function normalizePhoneDigits(s: string) {
   return s.replace(/\D/g, "");
+}
+
+function formatPhoneInput(value: string) {
+  const digits = normalizePhoneDigits(value).slice(0, 11);
+
+  if (digits.length <= 2) return digits.length ? `(${digits}` : "";
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  }
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
+
+function isThemeId(value: string | null): value is ThemeId {
+  return THEME_OPTIONS.some((theme) => theme.id === value);
 }
 
 function makeEmptyParticipant(): Participant {
@@ -77,6 +108,10 @@ async function copyToClipboard(text: string) {
 }
 
 export function Home() {
+  const [theme, setTheme] = useState<ThemeId>(() => {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return isThemeId(stored) ? stored : "christmas";
+  });
   const [participants, setParticipants] = useState<Participant[]>(() => [
     makeEmptyParticipant(),
     makeEmptyParticipant(),
@@ -88,6 +123,11 @@ export function Home() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const validated = useMemo(() => validateParticipants(participants), [participants]);
+
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
 
   const canDraw =
     validated.uniqueNames.length >= 3 &&
@@ -179,7 +219,7 @@ export function Home() {
           ? imported.map((r) => ({
               id: crypto.randomUUID(),
               name: r.name,
-              phone: r.phone,
+              phone: formatPhoneInput(r.phone),
             }))
           : [makeEmptyParticipant(), makeEmptyParticipant(), makeEmptyParticipant()];
 
@@ -193,12 +233,8 @@ export function Home() {
   return (
     <div className="page">
       <header className="topbar">
-        <div className="brand">
-          <div className="brandMark" aria-hidden />
-          <div>
-            <div className="brandTitle">Amigo Secreto</div>
-            <div className="brandSubtitle">Sorteador com links individuais</div>
-          </div>
+        <div className="brandBlock">
+          <div className="brandTitle">Amigo Secreto</div>
         </div>
       </header>
 
@@ -211,18 +247,10 @@ export function Home() {
           </p>
 
           <div className="importRow">
-            <div>
-              <div className="label" style={{ margin: 0 }}>
-                Importar participantes
-              </div>
-              <div className="muted importHint">
-                Arquivo <strong>.xlsx</strong> ou <strong>.csv</strong> com: Coluna A = Nome, Coluna
-                B = Celular.
-              </div>
-            </div>
             <label className="btn small fileBtn">
               Importar arquivo
               <input
+                title="Arquivo .xlsx ou .csv com: Coluna A = Nome, Coluna B = Celular com DDD (ex: 11999998888)."
                 className="fileInput"
                 type="file"
                 accept=".xlsx,.xls,.csv"
@@ -264,7 +292,7 @@ export function Home() {
                     className="input"
                     inputMode="text"
                     autoComplete="off"
-                    placeholder={idx < 3 ? `Participante ${idx + 1}` : "Nome"}
+                    placeholder={`Participante ${idx + 1}`}
                     value={p.name}
                     onChange={(e) => updateParticipant(p.id, { name: e.target.value })}
                   />
@@ -274,9 +302,9 @@ export function Home() {
                     className="input"
                     inputMode="numeric"
                     autoComplete="tel"
-                    placeholder="(DD) 9xxxx-xxxx"
+                    placeholder="(DDD) 9xxxx-xxxx"
                     value={p.phone}
-                    onChange={(e) => updateParticipant(p.id, { phone: e.target.value })}
+                    onChange={(e) => updateParticipant(p.id, { phone: formatPhoneInput(e.target.value) })}
                   />
                 </div>
                 <div className="cell actionsCell" role="cell">
@@ -329,7 +357,7 @@ export function Home() {
               Sortear
             </button>
             <button
-              className="btn"
+              className="btn ghost"
               onClick={() => {
                 setParticipants([makeEmptyParticipant(), makeEmptyParticipant(), makeEmptyParticipant()]);
                 setRows(null);
@@ -388,19 +416,32 @@ export function Home() {
                       </button>
                     </div>
                   </div>
-                  <div className="linkUrl" title={r.url}>
-                    {r.url}
-                  </div>
-                  <div className="linkHint">
-                    (Dica: abra em aba anônima para conferir que funciona.)
-                  </div>
                 </div>
               ))}
             </div>
           </section>
         ) : null}
       </main>
+
+      <footer className="footer footerThemes">
+        <div className="themePicker subtle" aria-label="Escolher tema">
+          {THEME_OPTIONS.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              className={theme === option.id ? "themeChip active" : "themeChip"}
+              onClick={() => setTheme(option.id)}
+              aria-pressed={theme === option.id}
+              aria-label={option.label}
+              title={option.label}
+            >
+              <span aria-hidden="true" className="themeChipIcon">
+                {option.icon}
+              </span>
+            </button>
+          ))}
+        </div>
+      </footer>
     </div>
   );
 }
-
