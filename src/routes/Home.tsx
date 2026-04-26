@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { makeSecretFriendPairs } from "../lib/draw";
-import { decodeNameFromUrl, encodeNameForUrl, encodeToken } from "../lib/codec";
+import { encodeNameForUrl, encodeToken } from "../lib/codec";
 import { randomIdBase36 } from "../lib/random";
 import "../styles/home.css";
 
@@ -219,28 +219,6 @@ export function Home() {
                 </div>
               ))}
             </div>
-
-            <details className="details">
-              <summary>Verificação rápida (opcional)</summary>
-              <div className="detailsBody">
-                <p className="muted">
-                  Esta app não guarda nada em servidor. Cada link já carrega o resultado “ofuscado”
-                  usando o ID do sorteio.
-                </p>
-                <p className="muted">
-                  Se quiser, cole um link aqui para ver como ele fica por dentro:
-                </p>
-                <code className="codeInline">
-                  {rows[0]?.url
-                    ? (() => {
-                        const u = new URL(rows[0].url);
-                        const g = u.hash.match(/g=([^&]+)/)?.[1];
-                        return g ? `g -> ${decodeNameFromUrl(decodeURIComponent(g))}` : "—";
-                      })()
-                    : "—"}
-                </code>
-              </div>
-            </details>
           </section>
         ) : null}
       </main>
