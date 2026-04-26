@@ -222,10 +222,6 @@ export function Home() {
           </section>
         ) : null}
       </main>
-
-      <footer className="footer">
-        <span className="muted">Feito para sorteios simples de Amigo Secreto (BR).</span>
-      </footer>
     </div>
   );
 }
