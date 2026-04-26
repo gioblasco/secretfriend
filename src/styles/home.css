@@ -14,6 +14,33 @@
   margin-bottom: 8px;
 }
 
+.importRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.importHint {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.fileBtn {
+  position: relative;
+  overflow: hidden;
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
 .participantsTable {
   width: 100%;
   border: 1px solid var(--border);

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { makeSecretFriendPairs } from "../lib/draw";
 import { encodeNameForUrl, encodeToken } from "../lib/codec";
 import { randomIdBase36 } from "../lib/random";
+import { importParticipantsFromFile } from "../lib/importParticipants";
 import "../styles/home.css";
 
 type Participant = {
@@ -165,6 +166,30 @@ export function Home() {
     });
   }
 
+  async function onImportFile(file: File) {
+    try {
+      setError(null);
+      setCopiedKey(null);
+      setRows(null);
+      setDrawId(null);
+
+      const imported = await importParticipantsFromFile(file);
+      const next: Participant[] =
+        imported.length > 0
+          ? imported.map((r) => ({
+              id: crypto.randomUUID(),
+              name: r.name,
+              phone: r.phone,
+            }))
+          : [makeEmptyParticipant(), makeEmptyParticipant(), makeEmptyParticipant()];
+
+      while (next.length < 3) next.push(makeEmptyParticipant());
+      setParticipants(next);
+    } catch {
+      setError("Não foi possível importar o arquivo. Verifique o formato e tente novamente.");
+    }
+  }
+
   return (
     <div className="page">
       <header className="topbar">
@@ -184,6 +209,31 @@ export function Home() {
             Preencha pelo menos 3 participantes. Ao sortear, você gera um link para cada pessoa
             descobrir quem ela tirou.
           </p>
+
+          <div className="importRow">
+            <div>
+              <div className="label" style={{ margin: 0 }}>
+                Importar participantes
+              </div>
+              <div className="muted importHint">
+                Arquivo <strong>.xlsx</strong> ou <strong>.csv</strong> com: Coluna A = Nome, Coluna
+                B = Celular.
+              </div>
+            </div>
+            <label className="btn small fileBtn">
+              Importar arquivo
+              <input
+                className="fileInput"
+                type="file"
+                accept=".xlsx,.xls,.csv"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) void onImportFile(f);
+                  e.currentTarget.value = "";
+                }}
+              />
+            </label>
+          </div>
 
           <div className="participantsHeader">
             <div className="label" style={{ margin: 0 }}>
