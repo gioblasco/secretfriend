@@ -1,0 +1,28 @@
+.hello {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.bigCard {
+  margin-top: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  background: radial-gradient(600px 220px at 10% 10%, rgba(124, 58, 237, 0.25), transparent 60%),
+    rgba(0, 0, 0, 0.22);
+  padding: 16px;
+}
+
+.bigLabel {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.bigName {
+  margin-top: 8px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  font-size: 30px;
+  line-height: 1.1;
+}
+

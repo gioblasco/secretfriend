@@ -1,0 +1,130 @@
+.metaRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.metaLabel {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.metaValue {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.metaValue.bad {
+  color: rgba(245, 158, 11, 0.95);
+}
+
+.resultHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.resultTools {
+  display: flex;
+  gap: 10px;
+}
+
+.drawIdRow {
+  margin-top: 10px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.linkCard {
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.linkTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.linkName {
+  font-weight: 820;
+  letter-spacing: -0.02em;
+}
+
+.linkUrl {
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.78);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.linkHint {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.details {
+  margin-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  padding-top: 10px;
+}
+
+.detailsBody {
+  margin-top: 10px;
+}
+
+.codeInline {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+}
+
